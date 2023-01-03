@@ -12,6 +12,7 @@ import moment = require('moment')
 import { languageDemiliters } from './delimiters'
 
 export type HeaderInfo = {
+  projectname: string,
   filename: string,
   author: string,
   createdBy: string,
@@ -26,7 +27,7 @@ export type HeaderInfo = {
 const genericTemplate = `
 ********************************************************************************
 *                                                                              *
-*                                                         :::      ::::::::    *
+*    $PROJECTNAME_______________________________          :::      ::::::::    *
 *    $FILENAME__________________________________        :+:      :+:    :+:    *
 *                                                     +:+ +:+         +:+      *
 *    By: $AUTHOR________________________________    +#+  +:+       +#+         *
@@ -116,6 +117,7 @@ const setFieldValue = (header: string, name: string, value: string) => {
  * Extract header info from header string
  */
 export const getHeaderInfo = (header: string): HeaderInfo => ({
+  projectname: getFieldValue(header, 'PROJECTNAME'),
   filename: getFieldValue(header, 'FILENAME'),
   author: getFieldValue(header, 'AUTHOR'),
   createdBy: getFieldValue(header, 'CREATEDBY'),
@@ -128,6 +130,7 @@ export const getHeaderInfo = (header: string): HeaderInfo => ({
  * Renders a language template with header info
  */
 export const renderHeader = (languageId: string, info: HeaderInfo) => [
+  { name: 'PROJECTNAME', value: info.projectname },
   { name: 'FILENAME', value: info.filename },
   { name: 'AUTHOR', value: info.author },
   { name: 'CREATEDAT', value: formatDate(info.createdAt) },
