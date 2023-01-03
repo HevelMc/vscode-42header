@@ -22,6 +22,13 @@ import {
 } from './header'
 
 /**
+ * Return current project name if specified in workspace settings
+ */
+const getCurrentProject = () =>
+  vscode.workspace.getConfiguration()
+    .get('42header.projectname') || ''
+
+/**
  * Return current user from config or ENV by default
  */
 const getCurrentUser = () =>
@@ -40,6 +47,7 @@ const getCurrentUserMail = () =>
  * Returns a fresh new HeaderInfo if none was passed
  */
 const newHeaderInfo = (document: TextDocument, headerInfo?: HeaderInfo) => {
+  const project = getCurrentProject()
   const user = getCurrentUser()
   const mail = getCurrentUserMail()
 
@@ -51,6 +59,7 @@ const newHeaderInfo = (document: TextDocument, headerInfo?: HeaderInfo) => {
     },
     headerInfo,
     {
+      projectname: project,
       filename: basename(document.fileName),
       author: `${user} <${mail}>`,
       updatedBy: user,
